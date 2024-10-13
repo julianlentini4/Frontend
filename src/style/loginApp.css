@@ -17,8 +17,8 @@ form{
     align-items: center;
     flex-direction: column;
     border-radius: 20px;
-    min-height: 310px;
-    min-width: 310px;
+    min-height: 410px;
+    min-width: 410px;
 }
 form input[type="text"]{
     text-decoration: none;
@@ -78,3 +78,17 @@ form button:hover{
 .loading p{
     font-size: 20px;
 }
+
+@media (max-width: 400px) {
+    form{
+        min-height: 260px;
+        min-width: 260px;
+    }
+  }
+
+@media (min-width: 400px) and (max-width: 500px) {
+    form{
+        min-height: 310px;
+        min-width: 310px;
+    }
+  }

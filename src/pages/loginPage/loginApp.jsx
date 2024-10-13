@@ -6,8 +6,8 @@ import '../../style/loginApp.css'
 
 export const LoginApp = ({endpoint}) =>{
 
-    const{setUser,isLogged,setIsLogged} = useContext(UserContext)
-    const{data,isLoading,error,fetchData} = useFetch()
+    const{setUser,setIsLogged} = useContext(UserContext)
+    const{data,error,fetchData} = useFetch()
     const [userName,setUserName] = useState('')
     const [isErrorName,setError] = useState('')
     const navigate = useNavigate()
@@ -21,7 +21,7 @@ export const LoginApp = ({endpoint}) =>{
         }
     },[data])
 
-    /*---Handle and Submit Functions---*/
+    /*---Handle Change and Submit Functions---*/
     const handleChangeName = (event) => {
         setError('')
         setUserName(event.target.value)
@@ -39,8 +39,8 @@ export const LoginApp = ({endpoint}) =>{
     return(            
     <div className="form_container">
         <form onSubmit={handleSubmit}>
-            <h1>PEDIDOS</h1>
-            <input type="text" value={userName} onChange={handleChangeName} placeholder="Ingrese su DNI"/>
+            <h1>Tareas</h1>
+            <input type="text" value={userName} onChange={handleChangeName} placeholder="Ingrese su usuario"/>
             <p className="error">{isErrorName ? isErrorName : error}</p> 
             <label>
                 <button type="submit">Enviar</button>
