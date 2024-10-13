@@ -33,7 +33,6 @@ export const useFetch = () => {
             })
         }
         catch (error) {
-            console.log("entre al error")
             setState({
                 data: null,
                 error: error.message,

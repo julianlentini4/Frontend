@@ -1,7 +1,6 @@
-
-export const TaskClient = ({task, index}) =>{
+export const TaskClient = ({task, index, key}) =>{
     return(
-        <tr key={task.id}>
+        <tr key={key}>
             <th scope="row">{index+1}</th>
             <th scope="row">{task.id}</th>
             <td>{task.title}</td>

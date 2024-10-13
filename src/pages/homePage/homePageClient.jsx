@@ -10,9 +10,9 @@ export const HomePageClient = ()=>{
     const {user, isLogged} = useContext(UserContext)
     const { data, isLoading, error, fetchData } = useFetch()
 
-    useEffect(() => {
+    useEffect(async () => {
         if(isLogged){
-            fetchData(`https://jsonplaceholder.typicode.com/todos?userId=${user[0].id}`, 'GET')
+            await fetchData(`https://jsonplaceholder.typicode.com/todos?userId=${user[0].id}`, 'GET')
         }
     }, [])
 
@@ -22,35 +22,36 @@ export const HomePageClient = ()=>{
         }
     }, [isLogged]);
 
-    return(<>            
-        <h2>Lista de Tareas: </h2>
-        {isLoading
-            ? <h4>Cargando...</h4>
-            : error
-                ? <h4>Ha ocurrido un error: {error}</h4>
-                :
-                <div className="tableContainer">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Id Tarea</th>
-                                <th scope="col">Descripcion</th>
-                                <th scope="col">Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                data.map((task,index) => {
-                                    return(
-                                            <TaskClient task={task} index={index}/>
-                                        )
-                                })
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
+    return(
+        <>            
+            <h2>Lista de Tareas: </h2>
+            {isLoading
+                ? <h4>Cargando...</h4>
+                : error
+                    ? <h4>Ha ocurrido un error: {error}</h4>
+                    :
+                    <div className="tableContainer">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Id Tarea</th>
+                                    <th scope="col">Descripcion</th>
+                                    <th scope="col">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    data.map((task,index) => {
+                                        return(
+                                                <TaskClient task={task} index={index} key={task.id}/>
+                                            )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
         </>
     )
 }
