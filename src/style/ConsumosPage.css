@@ -1,0 +1,11 @@
+.consumo{
+    width: 100%;
+   
+    box-sizing: border-box;
+}
+.consumo li{
+    border-bottom: 1px solid black;
+    grid-template-columns: 1fr 9fr 1fr;
+    grid-template-rows: 1fr; 
+    display: grid;
+}

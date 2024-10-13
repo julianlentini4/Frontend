@@ -3,7 +3,7 @@ import '../style/NavBarComponent.css'
 import { UserContext } from '../context/UseContext'
 import { useNavigate } from 'react-router-dom'
 export const NavBarComponent = () => {
-    const {user,isLogged,setIsLogged,pageDirection} = useContext(UserContext)
+    const {user,isLogged,setIsLogged} = useContext(UserContext)
     const navigate = useNavigate()
     const handleClickLogout = () =>{
         setIsLogged(false)

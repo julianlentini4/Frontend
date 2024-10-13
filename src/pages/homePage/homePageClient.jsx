@@ -1,17 +1,26 @@
-import { useContext, useEffect, useState} from "react"
+import { useContext, useEffect } from "react"
 import '../../style/HomePageClient.css'
 import { UserContext } from "../../context/UseContext"
-import { Navigate, useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useFetch } from "../../hooks/useFetch"
+import { TaskClient } from "./taskClient"
 
 export const HomePageClient = ()=>{
     const navigate = useNavigate()
-    const {user} = useContext(UserContext)
+    const {user, isLogged} = useContext(UserContext)
     const { data, isLoading, error, fetchData } = useFetch()
 
     useEffect(() => {
-        fetchData(`https://jsonplaceholder.typicode.com/todos?userId=${user[0].id}`, 'GET')
+        if(isLogged){
+            fetchData(`https://jsonplaceholder.typicode.com/todos?userId=${user[0].id}`, 'GET')
+        }
     }, [])
+
+    useEffect(() => {
+    if (!isLogged) {
+            navigate('/login'); // Redirigir si no hay usuario
+        }
+    }, [isLogged]);
 
     return(<>            
         <h2>Lista de Tareas: </h2>
@@ -32,14 +41,9 @@ export const HomePageClient = ()=>{
                         </thead>
                         <tbody>
                             {
-                                data.map((comment,index) => {
-                                    return (
-                                            <tr key={comment.id}>
-                                                <th scope="row">{index+1}</th>
-                                                <th scope="row">{comment.id}</th>
-                                                <td>{comment.title}</td>
-                                                <td>{comment.completed ? 'Completado' : 'Pendiente'}</td>
-                                            </tr>
+                                data.map((task,index) => {
+                                    return(
+                                            <TaskClient task={task} index={index}/>
                                         )
                                 })
                             }
