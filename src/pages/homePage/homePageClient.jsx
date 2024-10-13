@@ -10,9 +10,9 @@ export const HomePageClient = ()=>{
     const {user, isLogged} = useContext(UserContext)
     const { data, isLoading, error, fetchData } = useFetch()
 
-    useEffect(async () => {
+    useEffect(() => {
         if(isLogged){
-            await fetchData(`https://jsonplaceholder.typicode.com/todos?userId=${user[0].id}`, 'GET')
+            fetchData(`https://jsonplaceholder.typicode.com/todos?userId=${user[0].id}`, 'GET')
         }
     }, [])
 
