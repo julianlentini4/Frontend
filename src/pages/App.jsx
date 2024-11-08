@@ -1,9 +1,12 @@
+import ProtectedRoute from "./protected/ProtectedRoute"
 import { Navigate, Route, Routes } from "react-router-dom"
 import { HomePageClient } from "./homePage/homePageClient"
 import { LoginApp } from "./loginPage/loginApp"
 import { UserProvider } from "../context/UseProvider"
 import { NavBarComponent } from "../components/NavBarComponent"
-import ProtectedRoute from "./protected/ProtectedRoute"
+import {EstructuraComponent } from "../components/EstructuraComponent"
+import { InformesPage } from "./informesPage/InformesPage"
+import { TipoIngresosPage } from "./tipoIngresosPage/TipoIngresosPage"
 
 export const App = () => {
     return (
@@ -11,7 +14,11 @@ export const App = () => {
             <NavBarComponent/>
             <Routes>
                 <Route element={<ProtectedRoute/>}>
-                    <Route path="/home" element={<HomePageClient/>}></Route>  
+                    <Route element={<EstructuraComponent/>}>
+                        <Route path="/home" element={<HomePageClient/>}></Route>  
+                        <Route path="/informes" element={<InformesPage/>}></Route>  
+                        <Route path="/tipoIngresos" element={<TipoIngresosPage/>}></Route>  
+                    </Route>
                 </Route>
                 <Route path="/login" element={<LoginApp endpoint={"users"}/>}></Route>
                 <Route path="/*" element={<Navigate to='/login' />}></Route>

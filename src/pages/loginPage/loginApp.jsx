@@ -14,9 +14,10 @@ export const LoginApp = ({endpoint}) =>{
 
     /*Escuha el cambio en la variable DATA*/
     useEffect(()=>{
-        if(data){
+        if(data.access){
+            console.log("sisi")
             setIsLogged(true)
-            setUser(data)
+            setUser(data.data)
             navigate('/home')
         }
     },[data])
@@ -28,9 +29,9 @@ export const LoginApp = ({endpoint}) =>{
             //Setea el estado del error
             setError('Ingrese nombre mayor a 4 caracteres')
             return
-        }
+        }//localhost:3000/users/items?username=JUANMA
         //CustomHook Fetch - API Usuarios
-        await fetchData(`https://jsonplaceholder.typicode.com/${endpoint}?username=${userName}`,'GET') 
+        await fetchData(`http://localhost:3000/users/items?username=${userName}`,'GET') 
     }
 
     const handleChangeName = (event) => {
@@ -46,11 +47,12 @@ export const LoginApp = ({endpoint}) =>{
         <form onSubmit={handleSubmit}>
             <h1>Tareas</h1>
             <input type="text" value={userName} onChange={handleChangeName} placeholder="Ingrese su usuario"/>
-            <p className="error">{isErrorName ? isErrorName : error}</p> 
+            <p className="error">{isErrorName ? isErrorName : !data.access && data.message }</p> 
             <label>
                 <button type="submit">Enviar</button>
             </label>      
         </form>
+        {}
     </div>
     )
 }

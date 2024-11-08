@@ -3,7 +3,7 @@ import '../../style/HomePageClient.css'
 import { UserContext } from "../../context/UseContext"
 import { useNavigate } from "react-router-dom"
 import { useFetch } from "../../hooks/useFetch"
-import { TaskClient } from "./taskClient"
+import { ListaIngresos } from "./listaIngresos"
 
 export const HomePageClient = ()=>{
     const navigate = useNavigate()
@@ -12,7 +12,7 @@ export const HomePageClient = ()=>{
 
     useEffect(() => {
         if(isLogged){
-            fetchData(`https://jsonplaceholder.typicode.com/todos?userId=${user[0].id}`, 'GET')
+            fetchData(`http://localhost:3000/ingreso`, 'GET')
         }
     }, [])
 
@@ -24,7 +24,7 @@ export const HomePageClient = ()=>{
 
     return(
         <>            
-            <h2>Lista de Tareas: </h2>
+            <h2>Tipos de ingresos: </h2>
             {isLoading
                 ? <h4>Cargando...</h4>
                 : error
@@ -35,16 +35,16 @@ export const HomePageClient = ()=>{
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Id Tarea</th>
-                                    <th scope="col">Descripcion</th>
-                                    <th scope="col">Estado</th>
+                                    <th scope="col">Id Ingreso</th>
+                                    <th scope="col">Tipo de Ingreso</th>
+                                    <th scope="col">Descripción</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    data.map((task,index) => {
+                                    data.map((ingreso,index) => {
                                         return(
-                                                <TaskClient task={task} index={index} key={task.id}/>
+                                                <ListaIngresos data={ingreso} index={index} key={index}/>
                                             )
                                     })
                                 }

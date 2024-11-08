@@ -1,0 +1,1 @@
+export const sections = [{name:'Informes',route:'/informes'},{name:'Tipo de Ingresos',route:'/tipoIngresos'}]

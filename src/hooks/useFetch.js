@@ -3,7 +3,7 @@ import { useState } from "react"
 export const useFetch = () => {
 
     const [state, setState] = useState({
-        data: null,
+        data: [],
         isLoading: true,
         error: null
     })
