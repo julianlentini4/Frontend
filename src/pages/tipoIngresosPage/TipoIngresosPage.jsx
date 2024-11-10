@@ -2,7 +2,6 @@ import { useState } from "react"
 
 export const TipoIngresosPage = () =>{
     const [fecha, setFecha] = useState(null)
-    
     const handleSubmit = (e)=>{
         e.preventDefault()
         console.log(fecha)

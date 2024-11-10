@@ -3,9 +3,6 @@ import { sections } from "../sections"
 
 export const BarraLateralComponent = () =>{
     const navigate = useNavigate()
-    const handleClick = (route)=>{
-        console.log(route)
-    }
     return (
         <>
            {sections.map((section)=>{

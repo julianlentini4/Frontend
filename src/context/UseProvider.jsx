@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { UserContext } from "./UseContext"
+import { RouterContext, UserContext } from "./UseContext"
 
 export const UserProvider = ({children})=>{
     const [user,setUser] = useState({})
@@ -8,5 +8,14 @@ export const UserProvider = ({children})=>{
         <UserContext.Provider value={{user, setUser, isLogged, setIsLogged}}>
             {children}
         </UserContext.Provider>
+    )
+}
+
+export const RouterProvider = ({children})=>{
+    const [routerData,setRouterData] = useState(null)
+    return(
+        <RouterContext.Provider value={{routerData,setRouterData}}>
+            {children}
+        </RouterContext.Provider>
     )
 }

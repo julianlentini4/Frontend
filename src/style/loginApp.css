@@ -9,7 +9,7 @@
     align-items: center;
     min-height: 100vh;
 }
-form{
+.form{
     background-color: #00595B;
     display: flex;
     padding: 5px 30px;
@@ -20,14 +20,14 @@ form{
     min-height: 410px;
     min-width: 410px;
 }
-form input[type="text"]{
+.form input[type="text"]{
     text-decoration: none;
     border: 1px solid aliceblue;
     border-radius: 20px;
     padding: 14px 10px;
     width: 90%;
 }
-form h1{
+.form h1{
     color: aliceblue;
 
 }
@@ -36,7 +36,7 @@ label{
     width: 100%;
     text-align: center;
 }
-form button{
+.form button{
     text-decoration: none;
     border: none;
     background-color: aliceblue;
@@ -50,7 +50,7 @@ form button{
     cursor: pointer;
     transition: 0.2s all ease;
 }
-form button:hover{
+-form button:hover{
     background-color: aliceblue;
     color:#00595B;
     border: 1px solid #00595B;
@@ -80,14 +80,14 @@ form button:hover{
 }
 
 @media (max-width: 400px) {
-    form{
+    .form{
         min-height: 260px;
         min-width: 260px;
     }
   }
 
 @media (min-width: 400px) and (max-width: 500px) {
-    form{
+    .form{
         min-height: 310px;
         min-width: 310px;
     }
