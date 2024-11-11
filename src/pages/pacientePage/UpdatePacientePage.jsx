@@ -1,11 +1,9 @@
-import { useContext, useEffect, useState } from "react"
-import { RouterContext } from "../context/UseContext"
-import { useFetch } from "../hooks/useFetch"
-import { ModifyTableComponent } from "./ModifyTableComponent"
-import { UsersPage } from "../pages/usersPage/UsersPage"
+import { useContext, useState } from "react"
+import { RouterContext } from "../../context/UseContext"
+import { useFetch } from "../../hooks/useFetch"
+import { PacientesPage } from "./PacientesPage"
 
-
-export const UpdateComponent = ({endpoint}) => {
+export const UpdatePacientePage = ({endpoint}) => {
     const {routerData} = useContext(RouterContext)
     const {data, fetchData, isLoading, error} = useFetch()
     const [query, setQuery] = useState({})
@@ -32,10 +30,8 @@ export const UpdateComponent = ({endpoint}) => {
         Object.keys(query).forEach((key) => {
             if (query[key]) queryUrl.append(key, query[key]);
         })
-        console.log(queryUrl.toString())
         fetchData(`http://localhost:3000${endpoint}items?${queryUrl.toString()}`,'GET')
     }
-    console.log(query)
     return(
         <>
             {
@@ -57,7 +53,7 @@ export const UpdateComponent = ({endpoint}) => {
                     )
             }   
             {!isLoading && 
-                data ? <UsersPage data2={[data]} endpoint={endpoint} /> : <>{error}</>}
+                data ? <PacientesPage data2={[data]} endpoint={endpoint} /> : <>{error}</>}
         </>
     )
 }

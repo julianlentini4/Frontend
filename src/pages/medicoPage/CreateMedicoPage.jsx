@@ -1,22 +1,31 @@
 import { useContext, useEffect, useState } from "react"
-import { RouterContext } from "../context/UseContext"
-import { useFetch } from "../hooks/useFetch"
+import { RouterContext } from "../../context/UseContext"
+import { useFetch } from "../../hooks/useFetch"
 
-export const CreateComponent = ({endpoint}) => {
+export const CreateMedicoPage = ({endpoint}) => {
     const {routerData} = useContext(RouterContext)
     const {data, fetchData, isLoading, error} = useFetch()
-    const [query, setQuery] = useState({})
+    const [matricula, setMatricula] = useState()
+    const [apellido, setApellido] = useState()
+    const [nombre, setNombre] = useState()
+    const [dni, setDni] = useState()
+    const [validate, setValidate] = useState(true)
 
-    const handleChange = (event) =>{
-        const {name, value} = event.target
-        setQuery(prevData=>({
-            ...prevData,
-            [name]: value
-        }))        
+    const handleChange = (e) =>{
+        setValidate(true)
+        const{name, value}= e.target
+        if(name === 'matricula') setMatricula(parseInt(value))
+        if(name === 'apellido') setApellido(value)
+        if(name === 'nombre') setNombre(value)
+        if(name === 'dni') setDni(parseInt(value))
     }
     const handleSubmit = (e)=>{
         e.preventDefault()
-        fetchData(`http://localhost:3000${endpoint}`,'POST',query)
+        if(matricula=='' || apellido == '' || nombre == '' || isNaN(dni)){
+            setValidate(false)
+            return
+        }
+        fetchData(`http://localhost:3000${endpoint}`,'POST',{matricula,apellido,nombre,dni})
     }
     return(
         <>
@@ -42,6 +51,7 @@ export const CreateComponent = ({endpoint}) => {
             }   
             {!isLoading && 
                 data ? data.message : <>{error}</>}
+            {!validate && <p className="error">Los campos son requeridos</p>}
         </>
     )
 }

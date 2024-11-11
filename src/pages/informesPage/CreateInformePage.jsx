@@ -1,22 +1,35 @@
-import { useContext, useEffect, useState } from "react"
-import { RouterContext } from "../context/UseContext"
-import { useFetch } from "../hooks/useFetch"
+import { useContext, useState } from "react"
+import { RouterContext } from "../../context/UseContext"
+import { useFetch } from "../../hooks/useFetch"
 
-export const CreateComponent = ({endpoint}) => {
+export const CreateInformePage = ({endpoint}) => {
     const {routerData} = useContext(RouterContext)
     const {data, fetchData, isLoading, error} = useFetch()
-    const [query, setQuery] = useState({})
+    const [nroAcceso, setNroAcceso] = useState()
+    const [matricula, setMatricula] = useState()
+    const [descripcion, setDescripcion] = useState()
+    const [fechaInicio, setFechaInicio] = useState()
+    const [fechaFirmado, setFechaFirmado] = useState()
+    const [estado, setEstado] = useState()
+    const [validate, setValidate] = useState(true)
 
-    const handleChange = (event) =>{
-        const {name, value} = event.target
-        setQuery(prevData=>({
-            ...prevData,
-            [name]: value
-        }))        
+    const handleChange = (e) =>{
+        setValidate(true)
+        const{name, value}= e.target
+        if(name === 'nroAcceso') setNroAcceso(parseInt(value))
+        if(name === 'matricula') setMatricula(parseInt(value))
+        if(name === 'descripcion') setDescripcion(value)
+        if(name === 'fechaInicio') setFechaInicio(value)
+        if(name === 'fechaFirmado') setFechaFirmado(value)
+        if(name === 'estado') setEstado(value)   
     }
     const handleSubmit = (e)=>{
         e.preventDefault()
-        fetchData(`http://localhost:3000${endpoint}`,'POST',query)
+        if(isNaN(nroAcceso) || isNaN(matricula) || descripcion == '' || fechaInicio == '' || fechaFirmado == '' || estado == ''){
+            setValidate(false)
+            return
+        }
+        fetchData(`http://localhost:3000${endpoint}`,'POST',{nroAcceso,matricula,descripcion,fechaInicio,fechaFirmado,estado})
     }
     return(
         <>
@@ -42,6 +55,7 @@ export const CreateComponent = ({endpoint}) => {
             }   
             {!isLoading && 
                 data ? data.message : <>{error}</>}
+            {!validate && <p className="error">Los campos son requeridos</p>}
         </>
     )
 }

@@ -12,7 +12,6 @@ export const useFetch = () => {
 
     const fetchData = async (url, method, bodyData = null) => {
         if (!url) return
-        console.log(bodyData)
         try {
             const options = {
                 method: method,
