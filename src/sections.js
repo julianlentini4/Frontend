@@ -10,7 +10,44 @@ export const sections = [
             nombre:'Informe x ID',
             subroute:'/buscarInformesId',
             items:null
-        }]
+        },
+        {
+            nombre:'Nuevo Informe',
+            subroute:'/crearInforme',
+            items:[
+                {
+                    name:'nroAcceso',
+                    type:'number'
+                },
+                {
+                    name:'matricula',
+                    type:'number'
+                },
+                {
+                    name:'fechaInicio',
+                    type:'date'
+                },
+                {
+                    name:'fechaFirmado',
+                    type:'date'
+                },
+                {
+                    name:'estado',
+                    type:'text'
+                }
+            ]
+        },
+        {
+            nombre:'Borrar informe',
+            subroute:'/borrarInforme',
+            items:null
+        },
+        {
+            nombre:'Modificar Informe',
+            subroute:'/modificarInforme',
+            items:null
+        }
+    ]
     },
     {
         name:'Tipo de Ingresos',
@@ -36,10 +73,57 @@ export const sections = [
             subroute:'/buscarUsuarioId',
             items:[
                 {
-                name:'username',
-                type:'text'
+                    name:'username',
+                    type:'text'
                 }
             ]
-        }]
+        },
+        {
+            nombre:'Nuevo Usuario',
+            subroute:'/crearUsuario',
+            items:[
+                {
+                    name:'username',
+                    type:'text'
+                },
+                {
+                    name:'clave',
+                    type:'password'
+                },
+                {
+                    name:'tipo',
+                    type:'text'
+                },
+                {
+                    name:'sector',
+                    type:'text'
+                },
+                {
+                    name:'descripcion',
+                    type:'text'
+                }
+            ]
+        },
+        {
+            nombre:'Borrar Usuario',
+            subroute:'/borrarUsuario',
+            items:[
+                {
+                    name:'username',
+                    type:'text'
+                }
+            ]
+        },
+        {
+            nombre:'Modificar Usuario',
+            subroute:'/modificarUsuario',
+            items:[
+                {
+                    name:'username',
+                    type:'text'
+                }
+            ]
+        }
+        ]
     }
 ]

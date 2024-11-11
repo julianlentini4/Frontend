@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react"
 import { RouterContext } from "../context/UseContext"
 import { useFetch } from "../hooks/useFetch"
+import { ModifyTableComponent } from "./ModifyTableComponent"
 import { AutoTablaComponent } from "./AutoTablaComponent"
 
-export const GetByIdComponent = ({endpoint}) => {
+export const UpdateComponent = ({endpoint}) => {
     const {routerData} = useContext(RouterContext)
     const {data, fetchData, isLoading, error} = useFetch()
     const [query, setQuery] = useState({})
@@ -55,7 +56,7 @@ export const GetByIdComponent = ({endpoint}) => {
                     )
             }   
             {!isLoading && 
-                data ? <AutoTablaComponent data={[data]} /> : <>{error}</>}
+                data ? <ModifyTableComponent data2={[data]} endpoint={endpoint} /> : <>{error}</>}
         </>
     )
 }

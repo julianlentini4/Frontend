@@ -3,7 +3,7 @@ import { RouterContext } from "../context/UseContext"
 import { useFetch } from "../hooks/useFetch"
 import { AutoTablaComponent } from "./AutoTablaComponent"
 
-export const GetByIdComponent = ({endpoint}) => {
+export const DeleteComponent = ({endpoint}) => {
     const {routerData} = useContext(RouterContext)
     const {data, fetchData, isLoading, error} = useFetch()
     const [query, setQuery] = useState({})
@@ -33,6 +33,18 @@ export const GetByIdComponent = ({endpoint}) => {
         console.log(queryUrl.toString())
         fetchData(`http://localhost:3000${endpoint}items?${queryUrl.toString()}`,'GET')
     }
+    const handleClick = () =>{
+        if(uQuery){
+            fetchData(`http://localhost:3000${endpoint}${uQuery}`,'DELETE')
+            return
+        }
+        const queryUrl = new URLSearchParams();
+        Object.keys(query).forEach((key) => {
+            if (query[key]) queryUrl.append(key, query[key]);
+        })
+        console.log(queryUrl.toString())
+        fetchData(`http://localhost:3000${endpoint}items?${queryUrl.toString()}`,'DELETE')
+    }
     console.log(query)
     return(
         <>
@@ -48,14 +60,14 @@ export const GetByIdComponent = ({endpoint}) => {
                                     )
                             }
                             <label>
-                                <button type="submit">Enviar</button>
+                                <button type="submit">Buscar</button>
                             </label>   
                         </form>
                     </div>
                     )
             }   
             {!isLoading && 
-                data ? <AutoTablaComponent data={[data]} /> : <>{error}</>}
+                data ? <><AutoTablaComponent data={[data]} /><button onClick={handleClick}>Eliminar</button></> : <>{error}</>}
         </>
     )
 }
