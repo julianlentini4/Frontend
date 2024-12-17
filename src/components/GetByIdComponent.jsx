@@ -30,7 +30,6 @@ export const GetByIdComponent = ({endpoint}) => {
         Object.keys(query).forEach((key) => {
             if (query[key]) queryUrl.append(key, query[key]);
         })
-        console.log(queryUrl.toString())
         fetchData(`http://localhost:3000${endpoint}items?${queryUrl.toString()}`,'GET')
     }
     console.log(query)

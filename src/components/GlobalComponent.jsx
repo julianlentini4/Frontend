@@ -10,10 +10,12 @@ export const GlobalComponent = ({datos}) =>{
         navigate(url)
     }
     return(<>
-        <h1>{datos.name}</h1>
-        {datos.options.map((option)=>{
-            return(<button onClick={()=> handleClick(option,datos.route + option.subroute)}>{option.nombre}</button>)
-        })}
+        <div>
+            <h1>{datos.name}</h1>
+            {datos.options.map((option)=>{
+                return(<button onClick={()=> handleClick(option,datos.route + option.subroute)}>{option.nombre}</button>)
+            })}
+        </div>
         <Outlet/>
     </>)
 }

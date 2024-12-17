@@ -6,7 +6,6 @@ export const ModifyTableComponent = ({data2,endpoint}) =>{
     const [dataModify, setDataModify] = useState({})
 
     const handleChange = (e)=>{
-        setValidate(true)
         const{name, value}= e.target
         setDataModify(prevData=>({
             ...prevData,
@@ -15,7 +14,6 @@ export const ModifyTableComponent = ({data2,endpoint}) =>{
     }
 
     const handleClick = () =>{
-
         fetchData(`http://localhost:3000${endpoint}`,'PUT',dataModify)
     }
 

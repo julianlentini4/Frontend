@@ -4,13 +4,21 @@
     grid-template-rows: 100vh;
 }
 .barraLateral{
-    background-color: antiquewhite;
-    border: 0.5px solid black;
+    background-color: azure;
+    border: 0.1px solid black;
 }
 .index-section{
+
     padding: 5px;
-    border-bottom: 1px solid black;
+    border-bottom: 0.2px solid black;
 }
 .index-section:hover{
-    background-color: aqua;
+    background-color: rgb(255, 255, 255);
+}
+.content{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
 }

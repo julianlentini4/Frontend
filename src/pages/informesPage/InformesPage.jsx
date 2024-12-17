@@ -20,11 +20,11 @@ export const InformesPage = ({data2,endpoint}) =>{
             if(item === 'descripcion') setDescripcion(data2[0][item])
             if(item === 'fechaInicio') {
                 const dateObject = new Date(data2[0][item]);
-                setFechaInicio(dateObject.toISOString().split("T")[0])
+                setFechaInicio(dateObject.toDateString())
             }
             if(item === 'fechaFirmado') {
                 const dateObject = new Date(data2[0][item]);
-                setFechaFirmado(dateObject.toISOString().split("T")[0])
+                setFechaFirmado(dateObject.toDateString())
             }
             if(item === 'estado') setEstado(data2[0][item])
             

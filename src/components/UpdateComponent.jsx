@@ -35,7 +35,6 @@ export const UpdateComponent = ({endpoint}) => {
         console.log(queryUrl.toString())
         fetchData(`http://localhost:3000${endpoint}items?${queryUrl.toString()}`,'GET')
     }
-    console.log(query)
     return(
         <>
             {

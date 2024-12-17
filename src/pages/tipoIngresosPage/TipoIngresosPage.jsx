@@ -24,7 +24,7 @@ export const TipoIngresosPage = ({data2,endpoint}) =>{
     }
 
     const handleClick = () =>{
-        if(idIngreso==null || tipo == '' || descripcion==''){
+        if(isNaN(idIngreso) || tipo == '' || descripcion==''){
             setValidate(false)
             return
         }
