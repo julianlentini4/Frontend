@@ -47,11 +47,11 @@ export const LoginApp = () =>{
     <div className="form_container">
         <form className="form" onSubmit={handleSubmit}>
             <h1>Hospital</h1>
-            <input type="text" name={'username'} value={user.username} onChange={handleChangeName} placeholder="Ingrese su usuario"/>
-            <input type="text" name={'clave'} value={user.clave} onChange={handleChangeName} placeholder="Ingrese su clave"/>
+            <input type="text" name={'username'} value={user.username} onChange={handleChangeName} placeholder="Ingrese su usuario"/><br/>
+            <input type="password" name={'clave'} value={user.clave} onChange={handleChangeName} placeholder="Ingrese su clave"/>
             <p className="error">{isErrorName ? isErrorName : ''}</p> 
             <label>
-                <button type="submit">Enviar</button>
+                <button type="submit">Ingresar</button>
             </label>      
         </form>
     </div>

@@ -11,7 +11,7 @@ export const EstructuraComponent = () =>{
                 <div className="barraLateral">
                     <BarraLateralComponent/>
                 </div>
-                <div>
+                <div className="content">
                     <Outlet/>
                 </div>
             </div>
