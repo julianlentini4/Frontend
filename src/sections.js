@@ -288,5 +288,51 @@ export const sections = [
             items:null
         }
     ]
+    },
+    {
+        name:'Agendas',
+        route:'/agendas',
+        options:[{
+            nombre:'Buscar agenda',
+            subroute:'/buscarAgenda'
+        },
+        {
+            nombre:'Agenda por id',
+            subroute:'/buscarAgendaId',
+            items:null
+        },
+        {
+            nombre:'Nueva agenda',
+            subroute:'/crearAgenda',
+            items:[
+                {
+                    name:'matricula',
+                    type:'number'
+                },
+                {
+                    name:'dia',
+                    type:'number'
+                },
+                {
+                    name: 'horaIncio',
+                    type : 'time'
+                },
+                {
+                    name: 'horaFin',
+                    type: 'time'
+                }
+            ]
+        },
+        {
+            nombre:'Borrar agenda',
+            subroute:'/borrarAgenda',
+            items:null
+        },
+        {
+            nombre:'Modificar agenda',
+            subroute:'/modificarAgenda',
+            items:null
+        }
+    ]
     }
 ]

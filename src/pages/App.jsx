@@ -20,6 +20,8 @@ import { CreateMedicoPage } from "./medicoPage/CreateMedicoPage"
 import { UpdateMedicoPage } from "./medicoPage/UpdateMedicoPage"
 import { CreateSalaPage } from "./salaPage/CreateSalaPage"
 import { UpdateSalaPage } from "./salaPage/UpdateSalaPage"
+import { CreateAgendaPage } from "./agendaPage/CreateAgendaPage"
+import { UpdateAgendaPage } from "./agendaPage/UpdateAgendaPage"
 
 export const App = () => {
     return (
@@ -70,6 +72,13 @@ export const App = () => {
                                     <Route path="crearSala" element={<CreateSalaPage endpoint={'/sala/'}/>}></Route>
                                     <Route path="borrarSala" element={<DeleteComponent endpoint={'/sala/'}/>}></Route>
                                     <Route path="modificarSala" element={<UpdateSalaPage endpoint={'/sala/'}/>}></Route>
+                                </Route>
+                                <Route path="/agendas" element={<GlobalComponent datos={sections[6]}/>}>
+                                    <Route path="buscarAgenda" element={<GetAllComponent endpoint={'/agenda'}/>}></Route>
+                                    <Route path="buscarAgendaId" element={<GetByIdComponent endpoint={'/agenda/'}/>}></Route>
+                                    <Route path="crearAgenda" element={<CreateAgendaPage endpoint={'/agenda/'}/>}></Route>
+                                    <Route path="borrarAgenda" element={<DeleteComponent endpoint={'/agenda/'}/>}></Route>
+                                    <Route path="modificarAgenda" element={<UpdateAgendaPage endpoint={'/agenda/'}/>}></Route>
                                 </Route>
                         </Route>
                     </Route>
