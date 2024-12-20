@@ -74,6 +74,7 @@ export const App = () => {
                                     <Route path="modificarSala" element={<UpdateSalaPage endpoint={'/sala/'}/>}></Route>
                                 </Route>
                                 <Route path="/agendas" element={<GlobalComponent datos={sections[6]}/>}>
+                                <Route index element={<Navigate to="buscarAgenda" replace />} />
                                     <Route path="buscarAgenda" element={<GetAllComponent endpoint={'/agenda'}/>}></Route>
                                     <Route path="buscarAgendaId" element={<GetByIdComponent endpoint={'/agenda/'}/>}></Route>
                                     <Route path="crearAgenda" element={<CreateAgendaPage endpoint={'/agenda/'}/>}></Route>
@@ -81,6 +82,7 @@ export const App = () => {
                                     <Route path="modificarAgenda" element={<UpdateAgendaPage endpoint={'/agenda/'}/>}></Route>
                                 </Route>
                                 <Route path="/agendasDias" element={<GlobalComponent datos={sections[7]}/>}>
+                                    <Route index element={<Navigate to="buscarAgendaDia" replace />} />
                                     <Route path="buscarAgendaDia" element={<GetAllComponent endpoint={'/agendaDia'}/>}></Route>
                                     <Route path="buscarAgendaDiaId" element={<GetByIdComponent endpoint={'/agendaDia/'}/>}></Route>
                                     <Route path="crearAgendaDia" element={<CreateAgendaPage endpoint={'/agendaDia/'}/>}></Route>

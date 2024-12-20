@@ -292,10 +292,7 @@ export const sections = [
     {
         name:'Agendas',
         route:'/agendas',
-        options:[{
-            nombre:'Buscar agenda',
-            subroute:'/buscarAgenda'
-        },
+        options:[
         {
             nombre:'Agenda por id',
             subroute:'/buscarAgendaId',
@@ -308,11 +305,7 @@ export const sections = [
                 {
                     name:'matricula',
                     type:'number'
-                },
-                {
-                    name:'tipo',
-                    type:'text'
-                },
+                }
             ]
         },
         {
@@ -323,48 +316,6 @@ export const sections = [
         {
             nombre:'Modificar agenda',
             subroute:'/modificarAgenda',
-            items:null
-        }
-    ]
-    },
-    {
-        name:'AgendasDias',
-        route:'/agendasDias',
-        options:[{
-            nombre:'Buscar agendaDia',
-            subroute:'/buscarAgendaDia'
-        },
-        {
-            nombre:'AgendaDia por id',
-            subroute:'/buscarAgendaDiaId',
-            items:null
-        },
-        {
-            nombre:'Nueva agendaDia',
-            subroute:'/crearAgendaDia',
-            items:[
-                {
-                    name:'dia',
-                    type:'number'
-                },
-                {
-                    name:'horaInicio',
-                    type:'time'
-                },
-                {
-                    name:'horaFin',
-                    type:'time'
-                }
-            ]
-        },
-        {
-            nombre:'Borrar agendaDia',
-            subroute:'/borrarAgendaDia',
-            items:null
-        },
-        {
-            nombre:'Modificar agendaDia',
-            subroute:'/modificarAgendaDia',
             items:null
         }
     ]

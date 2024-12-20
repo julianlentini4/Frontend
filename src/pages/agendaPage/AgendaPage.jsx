@@ -42,7 +42,6 @@ export const AgendaPage = ({ endpoint }) => {
           <thead>
             <tr>
               <th>Matrícula</th>
-              <th>Tipo</th>
               <th>Días Relacionados</th>
             </tr>
           </thead>

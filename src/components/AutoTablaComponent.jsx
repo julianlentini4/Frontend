@@ -1,3 +1,4 @@
+
 export const AutoTablaComponent = ({data}) =>{
     console.log(data)
     return(
@@ -7,6 +8,7 @@ export const AutoTablaComponent = ({data}) =>{
                                 {Object.keys(data[0]).map((prop)=>{
                                     return <th>{[prop]}</th>
                                 })}
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>

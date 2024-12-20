@@ -7,7 +7,6 @@ export const CreateAgendaPage = ({ endpoint }) => {
   const { data, fetchData, isLoading, error } = useFetch();
 
   const [matricula, setMatricula] = useState("");
-  const [tipo, setTipo] = useState("");
   const [dias, setDias] = useState([{ dia: "", horaInicio: "", horaFin: "" }]);
   const [validate, setValidate] = useState(true);
 
@@ -24,7 +23,6 @@ export const CreateAgendaPage = ({ endpoint }) => {
       setDias(newDias);
     } else {
       if (name === "matricula") setMatricula(value);
-      if (name === "tipo") setTipo(value);
     }
   };
 
@@ -39,38 +37,33 @@ export const CreateAgendaPage = ({ endpoint }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     try {
-      // Crear la Agenda
       const agendaResponse = await fetch("http://localhost:3000/agenda", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ matricula, tipo }),
+        body: JSON.stringify({ matricula }),
       });
-
+  
       const agendaData = await agendaResponse.json();
-
+  
       if (agendaResponse.ok) {
-        // Usar el idAgenda generado para crear los días
-        const idAgenda = agendaData.idAgenda;
 
         for (const dia of dias) {
           const diaResponse = await fetch("http://localhost:3000/agendaDia", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              idAgenda,
-              dia: dia.dia,
+              dia: parseInt(dia.dia, 10),
               horaInicio: dia.horaInicio,
               horaFin: dia.horaFin,
             }),
           });
-
+  
           if (!diaResponse.ok) {
             console.error("Error al crear el día:", await diaResponse.text());
           }
         }
-
-        alert("Agenda creada exitosamente");
       } else {
         console.error("Error al crear la Agenda:", agendaData.message);
       }
@@ -78,6 +71,7 @@ export const CreateAgendaPage = ({ endpoint }) => {
       console.error("Error general:", error);
     }
   };
+  
 
   return (
     <div>
@@ -89,16 +83,6 @@ export const CreateAgendaPage = ({ endpoint }) => {
             type="number"
             name="matricula"
             value={matricula}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Tipo de Agenda</label>
-          <input
-            type="text"
-            name="tipo"
-            value={tipo}
             onChange={handleChange}
             required
           />
@@ -146,9 +130,9 @@ export const CreateAgendaPage = ({ endpoint }) => {
         <button type="submit">Crear Agenda</button>
       </form>
 
-      {!isLoading && data && <p>{data.message}</p>}
-      {error && <p className="error">{error}</p>}
-      {!validate && <p className="error">Todos los campos son requeridos.</p>}
+      {!isLoading && 
+                data ? data.message : <>{error}</>}
+            {!validate && <p className="error">Los campos son requeridos</p>}
     </div>
   );
 };
