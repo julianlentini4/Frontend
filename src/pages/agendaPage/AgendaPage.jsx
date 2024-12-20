@@ -1,106 +1,91 @@
 import { useEffect, useState } from "react";
 import { useFetch } from "../../hooks/useFetch";
 
-export const AgendaPage = ({ data2, endpoint }) => {
-  const { data, fetchData, isLoading, error } = useFetch();
-  const [matricula, setMatricula] = useState("");
-  const [dia, setDia] = useState("");
-  const [horaInicio, setHoraInicio] = useState("");
-  const [horaFin, setHoraFin] = useState("");
+export const AgendaPage = ({ endpoint }) => {
+  const { fetchData, isLoading, error } = useFetch();
+  const [agendas, setAgendas] = useState([]);
   const [validate, setValidate] = useState(true);
 
-
   useEffect(() => {
-    if (data2.length > 0) {
-      const item = data2[0];
-      setMatricula(item.matricula || "");
-      setDia(item.dia || "");
-      setHoraInicio(item.horaInicio || "");
-      setHoraFin(item.horaFin || "");
-    }
-  }, [data2]);
+    const fetchAgendas = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000${endpoint}`);
+        if (!response.ok) {
+          throw new Error("Error al obtener las agendas");
+        }
+        const agendasData = await response.json();
+        setAgendas(agendasData); // Se espera que el backend devuelva agendas con sus AgendaDias
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
 
+    fetchAgendas();
+  }, [endpoint]);
 
   const handleChange = (e) => {
     setValidate(true);
     const { name, value } = e.target;
-    if (name === "matricula") setMatricula(value);
-    if (name === "dia") setDia(value);
-    if (name === "horaInicio") setHoraInicio(value);
-    if (name === "horaFin") setHoraFin(value);
+    // Implementar cambios según las necesidades futuras
   };
 
-  // Validación y envío de datos
-  const handleClick = () => {
-    if (matricula === "" || dia === "" || horaInicio === "" || horaFin === "" || isNaN(matricula) || isNaN(dia)) {
-      setValidate(false);
-      return;
-    }
-    fetchData(`http://localhost:3000${endpoint}`, "PUT", {matricula,dia,horaInicio,horaFin,});
-  };
-
-  // Renderizado
   return (
     <>
-      <table className="table">
-        <thead>
-          <tr>
-            {Object.keys(data2[0]).map((prop, index) => (
-              <th key={index}>{prop}</th>
+      <h3>Agendas</h3>
+
+      {isLoading && <p>Cargando...</p>}
+      {error && <p className="error">Error: {error}</p>}
+      {!isLoading && agendas.length === 0 && <p>No hay agendas disponibles.</p>}
+
+      {!isLoading && agendas.length > 0 && (
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Matrícula</th>
+              <th>Tipo</th>
+              <th>Días Relacionados</th>
+            </tr>
+          </thead>
+          <tbody>
+            {agendas.map((agenda) => (
+              <tr key={agenda.idAgenda}>
+                <td>{agenda.matricula}</td>
+                <td>{agenda.tipo}</td>
+                <td>
+                  <table className="table-inner">
+                    <thead>
+                      <tr>
+                        <th>Día</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Fin</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {agenda.agendaDias.map((dia, index) => (
+                        <tr key={index}>
+                          <td>
+                            {[
+                              "Domingo",
+                              "Lunes",
+                              "Martes",
+                              "Miércoles",
+                              "Jueves",
+                              "Viernes",
+                              "Sábado",
+                            ][dia.dia]}
+                          </td>
+                          <td>{dia.horaInicio}</td>
+                          <td>{dia.horaFin}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {Object.keys(data2[0]).map((prop, index) => {
-              if (prop === "matricula") {
-                return (
-                  <td key={index}>
-                    <input type="number" name={prop} onChange={handleChange} value={matricula} readOnly/>
-                  </td>
-                );
-              }
-              if (prop === "dia") {
-                return (
-                  <td key={index}>
-                    <input
-                      type="number"
-                      name={prop}
-                      onChange={handleChange}
-                      value={dia}
-                    />
-                  </td>
-                );
-              }
-              if (prop === "horaInicio") {
-                return (
-                  <td key={index}>
-                    <input type="text" name={prop} onChange={handleChange} value={horaInicio}/>
-                  </td>
-                );
-              }
-              if (prop === "horaFin") {
-                return (
-                  <td key={index}>
-                    <input
-                      type="text"
-                      name={prop}
-                      onChange={handleChange}
-                      value={horaFin}
-                    />
-                  </td>
-                );
-              }
-              return <td key={index}></td>;
-            })}
-          </tr>
-        </tbody>
-      </table>
-
-      <button onClick={handleClick}>Modificar</button>
-
-      {!isLoading && data && <p>{data.message}</p>}
-      {error && <p className="error">{error}</p>}
+          </tbody>
+        </table>
+      )}
       {!validate && <p className="error">Todos los campos son requeridos.</p>}
     </>
   );

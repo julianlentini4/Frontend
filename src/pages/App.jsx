@@ -80,6 +80,13 @@ export const App = () => {
                                     <Route path="borrarAgenda" element={<DeleteComponent endpoint={'/agenda/'}/>}></Route>
                                     <Route path="modificarAgenda" element={<UpdateAgendaPage endpoint={'/agenda/'}/>}></Route>
                                 </Route>
+                                <Route path="/agendasDias" element={<GlobalComponent datos={sections[7]}/>}>
+                                    <Route path="buscarAgendaDia" element={<GetAllComponent endpoint={'/agendaDia'}/>}></Route>
+                                    <Route path="buscarAgendaDiaId" element={<GetByIdComponent endpoint={'/agendaDia/'}/>}></Route>
+                                    <Route path="crearAgendaDia" element={<CreateAgendaPage endpoint={'/agendaDia/'}/>}></Route>
+                                    <Route path="borrarAgendaDia" element={<DeleteComponent endpoint={'/agendaDia/'}/>}></Route>
+                                    <Route path="modificarAgendaDia" element={<UpdateAgendaPage endpoint={'/agendaDia/'}/>}></Route>
+                                </Route>
                         </Route>
                     </Route>
                     <Route path="/login" element={<LoginApp/>}></Route>

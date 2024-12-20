@@ -310,17 +310,9 @@ export const sections = [
                     type:'number'
                 },
                 {
-                    name:'dia',
-                    type:'number'
+                    name:'tipo',
+                    type:'text'
                 },
-                {
-                    name: 'horaIncio',
-                    type : 'time'
-                },
-                {
-                    name: 'horaFin',
-                    type: 'time'
-                }
             ]
         },
         {
@@ -331,6 +323,48 @@ export const sections = [
         {
             nombre:'Modificar agenda',
             subroute:'/modificarAgenda',
+            items:null
+        }
+    ]
+    },
+    {
+        name:'AgendasDias',
+        route:'/agendasDias',
+        options:[{
+            nombre:'Buscar agendaDia',
+            subroute:'/buscarAgendaDia'
+        },
+        {
+            nombre:'AgendaDia por id',
+            subroute:'/buscarAgendaDiaId',
+            items:null
+        },
+        {
+            nombre:'Nueva agendaDia',
+            subroute:'/crearAgendaDia',
+            items:[
+                {
+                    name:'dia',
+                    type:'number'
+                },
+                {
+                    name:'horaInicio',
+                    type:'time'
+                },
+                {
+                    name:'horaFin',
+                    type:'time'
+                }
+            ]
+        },
+        {
+            nombre:'Borrar agendaDia',
+            subroute:'/borrarAgendaDia',
+            items:null
+        },
+        {
+            nombre:'Modificar agendaDia',
+            subroute:'/modificarAgendaDia',
             items:null
         }
     ]

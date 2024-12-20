@@ -1,89 +1,154 @@
-import { useContext, useEffect, useState } from "react"
-import { RouterContext } from "../../context/UseContext"
-import { useFetch } from "../../hooks/useFetch"
+import { useContext, useState } from "react";
+import { RouterContext } from "../../context/UseContext";
+import { useFetch } from "../../hooks/useFetch";
 
-export const CreateAgendaPage = ({endpoint}) => {
-    const {routerData} = useContext(RouterContext)
-    const {data, fetchData, isLoading, error} = useFetch()
-    const [matricula, setMatricula] = useState()
-    const [matriculasDisponibles, setMatriculasDisponibles] = useState([]);
-    const [dia, setDia] = useState()
-    const [horaInicio, setHoraInicio] = useState()
-    const [horaFin, setHoraFin] = useState()
-    const [validate, setValidate] = useState(true)
+export const CreateAgendaPage = ({ endpoint }) => {
+  const { routerData } = useContext(RouterContext);
+  const { data, fetchData, isLoading, error } = useFetch();
 
-    const handleChange = (e) =>{
-        setValidate(true)
-        const{name, value}= e.target
-        if(name === 'matricula') setMatricula(parseInt(value))
-        if(name === 'dia') setDia(parseInt(value))
-        if(name === 'horaInicio') setHoraInicio(value)
-        if(name === 'horaFin') setHoraFin(value)
+  const [matricula, setMatricula] = useState("");
+  const [tipo, setTipo] = useState("");
+  const [dias, setDias] = useState([{ dia: "", horaInicio: "", horaFin: "" }]);
+  const [validate, setValidate] = useState(true);
+
+  const agendaUrl = `http://localhost:3000${endpoint}`;
+  const agendaDiaUrl = `${agendaUrl}Dia`;
+
+  const handleChange = (e, index = null) => {
+    setValidate(true);
+    const { name, value } = e.target;
+
+    if (index !== null) {
+      const newDias = [...dias];
+      newDias[index][name] = value;
+      setDias(newDias);
+    } else {
+      if (name === "matricula") setMatricula(value);
+      if (name === "tipo") setTipo(value);
     }
+  };
 
-    const diasSemana = [
-        { value: 0, label: "Domingo" },
-        { value: 1, label: "Lunes" },
-        { value: 2, label: "Martes" },
-        { value: 3, label: "Miércoles" },
-        { value: 4, label: "Jueves" },
-        { value: 5, label: "Viernes" },
-        { value: 6, label: "Sábado" },
-      ];
+  const handleAddDia = () => {
+    setDias([...dias, { dia: "", horaInicio: "", horaFin: "" }]);
+  };
 
-     /* useEffect(() => {
-        const fetchMedicos = async () => {
-          try {
-            const response = await fetch("http://localhost:3000/medico");
-            const medicos = await response.json();
-            setMatriculasDisponibles(medicos.map((medico) => medico.matricula)); // Extraer solo las matrículas
-          } catch (err) {
-            console.error("Error al cargar las matrículas:", err);
+  const handleRemoveDia = (index) => {
+    const newDias = dias.filter((_, i) => i !== index);
+    setDias(newDias);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Crear la Agenda
+      const agendaResponse = await fetch("http://localhost:3000/agenda", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ matricula, tipo }),
+      });
+
+      const agendaData = await agendaResponse.json();
+
+      if (agendaResponse.ok) {
+        // Usar el idAgenda generado para crear los días
+        const idAgenda = agendaData.idAgenda;
+
+        for (const dia of dias) {
+          const diaResponse = await fetch("http://localhost:3000/agendaDia", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              idAgenda,
+              dia: dia.dia,
+              horaInicio: dia.horaInicio,
+              horaFin: dia.horaFin,
+            }),
+          });
+
+          if (!diaResponse.ok) {
+            console.error("Error al crear el día:", await diaResponse.text());
           }
-        };
-    
-        fetchMedicos();
-      }, []);*/
-
-      
-    const handleSubmit = (e)=>{
-        e.preventDefault()
-        if(matricula=='' || dia == '' || horaInicio == '' || horaFin == ''){
-            setValidate(false)
-            return
         }
-        fetchData(`http://localhost:3000${endpoint}`,'POST',{matricula,dia,horaInicio,horaFin})
+
+        alert("Agenda creada exitosamente");
+      } else {
+        console.error("Error al crear la Agenda:", agendaData.message);
+      }
+    } catch (error) {
+      console.error("Error general:", error);
     }
-    return (
-        <>
-          {routerData && (
-            <div className="form-ById">
-              <form onSubmit={handleSubmit}>
-                <label>Matricula:</label>
-                <input type="number" name="matricula" value={matricula || ""} onChange={handleChange} required/>
-                <br />  
-                <label>Día:</label>
-                <select name="dia" value={dia || ""} onChange={handleChange} required>
-                <option value="" disabled>Selecciona un día</option>
-                {diasSemana.map((diaObj) => (
-                    <option key={diaObj.value} value={diaObj.value}>
-                    {diaObj.label}
-                    </option>
-                ))}
-                </select>
-                <br />
-                <label>Hora Inicio:</label>
-                <input type="time" name="horaInicio" value={horaInicio || ""} onChange={handleChange} required />
-                <br />
-                <label>Hora Fin:</label>
-                <input type="time" name="horaFin" value={horaFin || ""} onChange={handleChange} required/>
-                <br />
-                <button type="submit">Enviar</button>
-              </form>
-            </div>
-          )}
-          {!isLoading && data ? data.message : <>{error}</>}
-          {!validate && <p className="error">Los campos son requeridos</p>}
-        </>
-      );
-    };
+  };
+
+  return (
+    <div>
+      <h3>Crear Agenda</h3>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Matrícula</label>
+          <input
+            type="number"
+            name="matricula"
+            value={matricula}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Tipo de Agenda</label>
+          <input
+            type="text"
+            name="tipo"
+            value={tipo}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <h4>Días de la Agenda</h4>
+        {dias.map((dia, index) => (
+          <div key={index} className="dia-item">
+            <select
+              name="dia"
+              value={dia.dia}
+              onChange={(e) => handleChange(e, index)}
+              required
+            >
+              <option value="">Seleccione un día</option>
+              <option value="0">Domingo</option>
+              <option value="1">Lunes</option>
+              <option value="2">Martes</option>
+              <option value="3">Miércoles</option>
+              <option value="4">Jueves</option>
+              <option value="5">Viernes</option>
+              <option value="6">Sábado</option>
+            </select>
+            <input
+              name="horaInicio"
+              type="time"
+              value={dia.horaInicio}
+              onChange={(e) => handleChange(e, index)}
+              required
+            />
+            <input
+              name="horaFin"
+              type="time"
+              value={dia.horaFin}
+              onChange={(e) => handleChange(e, index)}
+              required
+            />
+            <button type="button" onClick={() => handleRemoveDia(index)}>
+              Eliminar Día
+            </button>
+          </div>
+        ))}
+        <button type="button" onClick={handleAddDia}>
+          Agregar Día
+        </button>
+        <button type="submit">Crear Agenda</button>
+      </form>
+
+      {!isLoading && data && <p>{data.message}</p>}
+      {error && <p className="error">{error}</p>}
+      {!validate && <p className="error">Todos los campos son requeridos.</p>}
+    </div>
+  );
+};
