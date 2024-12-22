@@ -16,7 +16,7 @@ svg{
     text-decoration: none;
     padding: 5px;
     border: none;
-    background-color: #EA3323;
+    background-color: #ff0000;
     border-radius: 10px;
     font-family: "Poppins", sans-serif;
     font-weight: 700;
@@ -33,7 +33,7 @@ svg{
     font-family: "Poppins", sans-serif;
     font-weight: 600;
     font-style: normal;
-    color: #00595B;
+    color: #00828b;
 }
 
 .ocultar{

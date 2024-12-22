@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { RouterContext } from "../../context/UseContext"
 import { useFetch } from "../../hooks/useFetch"
-import { AgendaPage } from "./AgendaPage"
+import { AgendaPage } from "./AgendaPagedsad.jsx"
 
 export const UpdateAgendaPage = ({endpoint}) => {
     const {routerData} = useContext(RouterContext)
@@ -53,7 +53,7 @@ export const UpdateAgendaPage = ({endpoint}) => {
                     )
             }   
             {!isLoading && 
-                data ? <InformesPage data2={[data]} endpoint={endpoint} /> : <>{error}</>}
+                data ? <AgendaPage data2={[data]} endpoint={endpoint} /> : <>{error}</>}
         </>
     )
 }

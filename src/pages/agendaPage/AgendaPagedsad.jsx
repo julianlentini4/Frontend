@@ -2,82 +2,57 @@ import { useEffect, useState } from "react";
 import { useFetch } from "../../hooks/useFetch";
 
 export const AgendaPage = ({ data2, endpoint }) => {
-  const { data, fetchData, isLoading, error } = useFetch();
-  const [matricula, setMatricula] = useState("");
-  const [dia, setDia] = useState("");
-  const [horaInicio, setHoraInicio] = useState("");
-  const [horaFin, setHoraFin] = useState("");
-  const [validate, setValidate] = useState(true);
+  const { data, fetchData, isLoading, error } = useFetch()
+  const [idAgenda, setIdAgenda] = useState()
+  const [matricula, setMatricula] = useState()
+  const [validate, setValidate] = useState(true)
 
+  useEffect(()=>{
+    Object.keys(data2[0]).forEach((item)=>{
+        if(item === 'idAgenda') setIdAgenda(data2[0][item])   
+        if(item === 'matricula') setMatricula(data2[0][item])
+    })
+},[])
 
-  useEffect(() => {
-    if (data2.length > 0) {
-      const item = data2[0];
-      setMatricula(item.matricula || "");
-      setDia(item.dia || "");
-      setHoraInicio(item.horaInicio || "");
-      setHoraFin(item.horaFin || "");
+  const handleChange = (e)=>{
+    setValidate(true)
+    const{name, value}= e.target
+    if(name === 'matricula') setMatricula(parseInt(value))
+  }
+  const handleClick = () =>{
+    if(matricula=='' || isNaN(idAgenda)){
+        setValidate(false)
+        return
     }
-  }, [data2]);
+    fetchData(`http://localhost:3000${endpoint}`,'PUT',{matricula})
+}
 
-
-  const handleChange = (e) => {
-    setValidate(true);
-    const { name, value } = e.target;
-    if (name === "matricula") setMatricula(value);
-    if (name === "dia") setDia(value);
-    if (name === "horaInicio") setHoraInicio(value);
-    if (name === "horaFin") setHoraFin(value);
-  };
-
-  // Validación y envío de datos
-  const handleClick = () => {
-    if (matricula === "" || dia === "" || horaInicio === "" || horaFin === "" || isNaN(matricula) || isNaN(dia)) {
-      setValidate(false);
-      return;
-    }
-    fetchData(`http://localhost:3000${endpoint}`, "PUT", {matricula,dia,horaInicio,horaFin,});
-  };
-
-  // Renderizado
-  return (
-    <>
+return(
+  <>
       <table className="table">
-        <thead>
-          <tr>
-            {Object.keys(data2[0]).map((prop, index) => (
-              <th key={index}>{prop}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {Object.keys(data2[0]).map((prop, index) => {
-              if (prop === "matricula") {
-                return (
-                  <td key={index}>
-                    <input type="number" name={prop} onChange={handleChange} value={matricula} readOnly/>
-                  </td>
-                );
-              }
-              if (prop === "tipo") {
-                return ( 
-                  <td key={index}> 
-                    <input type="text" name={prop} onChange={handleChange} value={tipo}/>
-                  </td>
-                );
-              }
-              return <td key={index}></td>;
-            })}
-          </tr>
-        </tbody>
+                      <thead>
+                          <tr>
+                              {Object.keys(data2[0]).map((prop)=>{
+                                  return <th>{[prop]}</th>
+                              })}
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>{Object.keys(data2[0]).map((prop)=>{
+                                  if(prop == 'idAgenda' ){
+                                      return <td><input type='number' name={prop} onChange={handleChange} value={idAgenda} readOnly/></td>
+                                  }                              
+                                  if(prop == 'matricula' ){
+                                      return <td><input type='number' name={prop} onChange={handleChange} value={matricula}/></td>
+                                  }
+                              })}
+                          </tr>
+                      </tbody>
       </table>
-
       <button onClick={handleClick}>Modificar</button>
-
-      {!isLoading && data && <p>{data.message}</p>}
-      {error && <p className="error">{error}</p>}
-      {!validate && <p className="error">Todos los campos son requeridos.</p>}
-    </>
-  );
-};
+      {!isLoading && 
+          data ? <p>{data.message}</p> : <>{error}</>}
+      {!validate && <p className="error">Los campos son requeridos</p>}
+  </>
+)
+}

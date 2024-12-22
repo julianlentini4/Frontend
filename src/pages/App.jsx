@@ -8,6 +8,7 @@ import { GlobalComponent } from "../components/GlobalComponent"
 import { sections } from "../sections"
 import { GetAllComponent } from "../components/GetAllComponent"
 import { GetByIdComponent } from "../components/GetByIdComponent"
+import { GetAllComponentAgenda } from "../components/GetAllComponentAgenda.jsx"
 import { CreateComponent } from "../components/CreateComponent"
 import { DeleteComponent } from "../components/DeleteComponent"
 import { UpdateInformePage } from "./informesPage/UpdateInformePage"
@@ -75,11 +76,11 @@ export const App = () => {
                                 </Route>
                                 <Route path="/agendas" element={<GlobalComponent datos={sections[6]}/>}>
                                 <Route index element={<Navigate to="buscarAgenda" replace />} />
-                                    <Route path="buscarAgenda" element={<GetAllComponent endpoint={'/agenda'}/>}></Route>
+                                    <Route path="buscarAgenda" element={<GetAllComponentAgenda endpoint={'/agenda'}/>}></Route>
                                     <Route path="buscarAgendaId" element={<GetByIdComponent endpoint={'/agenda/'}/>}></Route>
                                     <Route path="crearAgenda" element={<CreateAgendaPage endpoint={'/agenda/'}/>}></Route>
                                     <Route path="borrarAgenda" element={<DeleteComponent endpoint={'/agenda/'}/>}></Route>
-                                    <Route path="modificarAgenda" element={<UpdateAgendaPage endpoint={'/agenda/'}/>}></Route>
+                                    <Route path="modificarAgenda" element={<UpdateAgendaPage endpoint={'/agenda/idAgenda'}/>}></Route>
                                 </Route>
                                 <Route path="/agendasDias" element={<GlobalComponent datos={sections[7]}/>}>
                                     <Route index element={<Navigate to="buscarAgendaDia" replace />} />

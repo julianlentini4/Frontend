@@ -1,91 +1,59 @@
-import { useEffect, useState } from "react";
-import { useFetch } from "../../hooks/useFetch";
+import { useEffect, useState } from "react"
+import { useFetch } from "../../hooks/useFetch"
 
-export const AgendaPage = ({ endpoint }) => {
-  const { fetchData, isLoading, error } = useFetch();
-  const [agendas, setAgendas] = useState([]);
-  const [validate, setValidate] = useState(true);
+export const AgendaPage = ({data2,endpoint}) =>{
+    const {data, fetchData, isLoading, error} = useFetch()
+    const [idAgenda, setIdAgenda] = useState()
+    const [matricula, setMatricula] = useState()
+    const [validate, setValidate] = useState(true)
 
-  useEffect(() => {
-    const fetchAgendas = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000${endpoint}`);
-        if (!response.ok) {
-          throw new Error("Error al obtener las agendas");
+    useEffect(()=>{
+        Object.keys(data2[0]).forEach((item)=>{
+            if(item === 'idAgenda') setIdAgenda(data2[0][item])
+            if(item === 'matricula') setMatricula(data2[0][item])         
+        })
+    },[])
+
+    const handleChange = (e)=>{
+        setValidate(true)
+        const{name, value}= e.target
+        if(name === 'matricula') setMatricula(value)
+    }
+
+    const handleClick = () =>{
+        if(matricula=='' || isNaN(idAgenda)){
+            setValidate(false)
+            return
         }
-        const agendasData = await response.json();
-        setAgendas(agendasData); // Se espera que el backend devuelva agendas con sus AgendaDias
-      } catch (err) {
-        console.error(err.message);
-      }
-    };
+        fetchData(`http://localhost:3000${endpoint}`,'PUT',{matricula})
+    }
 
-    fetchAgendas();
-  }, [endpoint]);
-
-  const handleChange = (e) => {
-    setValidate(true);
-    const { name, value } = e.target;
-    // Implementar cambios según las necesidades futuras
-  };
-
-  return (
-    <>
-      <h3>Agendas</h3>
-
-      {isLoading && <p>Cargando...</p>}
-      {error && <p className="error">Error: {error}</p>}
-      {!isLoading && agendas.length === 0 && <p>No hay agendas disponibles.</p>}
-
-      {!isLoading && agendas.length > 0 && (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Matrícula</th>
-              <th>Días Relacionados</th>
-            </tr>
-          </thead>
-          <tbody>
-            {agendas.map((agenda) => (
-              <tr key={agenda.idAgenda}>
-                <td>{agenda.matricula}</td>
-                <td>{agenda.tipo}</td>
-                <td>
-                  <table className="table-inner">
-                    <thead>
-                      <tr>
-                        <th>Día</th>
-                        <th>Hora Inicio</th>
-                        <th>Hora Fin</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {agenda.agendaDias.map((dia, index) => (
-                        <tr key={index}>
-                          <td>
-                            {[
-                              "Domingo",
-                              "Lunes",
-                              "Martes",
-                              "Miércoles",
-                              "Jueves",
-                              "Viernes",
-                              "Sábado",
-                            ][dia.dia]}
-                          </td>
-                          <td>{dia.horaInicio}</td>
-                          <td>{dia.horaFin}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      {!validate && <p className="error">Todos los campos son requeridos.</p>}
-    </>
-  );
-};
+    return(
+        <>
+            <table className="table">
+                            <thead>
+                                <tr>
+                                    {Object.keys(data2[0]).map((prop)=>{
+                                        return <th>{[prop]}</th>
+                                    })}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>{Object.keys(data2[0]).map((prop)=>{
+                                        if(prop == 'idAgenda' ){
+                                          return <td><input type='number' name={prop} onChange={handleChange} value={idAgenda} readOnly/></td>
+                                        }                                  
+                                        if(prop == 'matricula' ){
+                                            return <td><input type='number' name={prop} onChange={handleChange} value={matricula} readOnly/></td>
+                                        }
+                                    })}
+                                </tr>
+                            </tbody>
+            </table>
+            <button onClick={handleClick}>Modificar</button>
+            {!isLoading && 
+                data ? <p>{data.message}</p> : <>{error}</>}
+            {!validate && <p className="error">Los campos son requeridos</p>}
+        </>
+    )
+}

@@ -1,4 +1,3 @@
-
 export const AutoTablaComponent = ({data}) =>{
     console.log(data)
     return(
