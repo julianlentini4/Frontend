@@ -14,7 +14,7 @@ export const GetAllComponentAgenda = ({ endpoint }) => {
       }
     };
     fetchUserData();
-  }, [endpoint]); // Agregar `endpoint` como dependencia
+  }, [endpoint]); 
 
   return (
     <>

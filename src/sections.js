@@ -1,3 +1,5 @@
+
+
 export const sections = [
     {
         name:'Informes',
@@ -307,16 +309,6 @@ export const sections = [
                     type:'number'
                 }
             ]
-        },
-        {
-            nombre:'Borrar agenda',
-            subroute:'/borrarAgenda',
-            items:null
-        },
-        {
-            nombre:'Modificar agenda',
-            subroute:'/modificarAgenda',
-            items:null
         }
     ]
     }

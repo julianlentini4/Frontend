@@ -1,0 +1,52 @@
+/* Estilo base del botón */
+.button {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Efecto hover para todos los botones */
+.button:hover {
+    transform: scale(1.05); /* Efecto de ampliación al pasar el ratón */
+}
+
+/* Estilo específico para cada tipo de botón */
+.button-informes {
+    background-color: #FF6347;
+    color: white;
+}
+
+.button-informes:hover {
+    background-color: #FF4500;
+}
+
+.button-ingresos {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.button-ingresos:hover {
+    background-color: #45a049;
+}
+
+.button-usuarios {
+    background-color: #008CBA;
+    color: white;
+}
+
+.button-usuarios:hover {
+    background-color: #005f6b;
+}
+
+.button-pacientes {
+    background-color: #e7e7e7;
+    color: black;
+}
+
+.button-pacientes:hover {
+    background-color: #ddd;
+}

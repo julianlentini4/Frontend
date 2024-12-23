@@ -22,7 +22,7 @@ export const CreateAgendaPage = ({ endpoint }) => {
       newDias[index][name] = value;
       setDias(newDias);
     } else {
-      if (name === "matricula") setMatricula(value);
+      if (name === "matricula") setMatricula(parseInt(value));
     }
   };
 
@@ -39,10 +39,11 @@ export const CreateAgendaPage = ({ endpoint }) => {
     e.preventDefault();
   
     try {
+      const mat = parseInt(matricula, 10);
       const agendaResponse = await fetch("http://localhost:3000/agenda", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ matricula }),
+        body: JSON.stringify({ matricula:mat }),
       });
   
       const agendaData = await agendaResponse.json();
@@ -54,16 +55,16 @@ export const CreateAgendaPage = ({ endpoint }) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              dia: parseInt(dia.dia, 10),
+              dia: dia.dia,
               horaInicio: dia.horaInicio,
               horaFin: dia.horaFin,
             }),
           });
-  
           if (!diaResponse.ok) {
             console.error("Error al crear el día:", await diaResponse.text());
           }
         }
+        alert("Agenda creada con éxito!");
       } else {
         console.error("Error al crear la Agenda:", agendaData.message);
       }
@@ -77,55 +78,20 @@ export const CreateAgendaPage = ({ endpoint }) => {
     <div>
       <h3>Crear Agenda</h3>
       <form onSubmit={handleSubmit}>
-        <div>
           <label>Matrícula</label>
-          <input
-            type="number"
-            name="matricula"
-            value={matricula}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <h4>Días de la Agenda</h4>
+          <input type="number" name="matricula" value={parseInt(matricula)} onChange={handleChange} required />
+        <h4>Fecha</h4>
         {dias.map((dia, index) => (
           <div key={index} className="dia-item">
-            <select
-              name="dia"
-              value={dia.dia}
-              onChange={(e) => handleChange(e, index)}
-              required
-            >
-              <option value="">Seleccione un día</option>
-              <option value="0">Domingo</option>
-              <option value="1">Lunes</option>
-              <option value="2">Martes</option>
-              <option value="3">Miércoles</option>
-              <option value="4">Jueves</option>
-              <option value="5">Viernes</option>
-              <option value="6">Sábado</option>
-            </select>
-            <input
-              name="horaInicio"
-              type="time"
-              value={dia.horaInicio}
-              onChange={(e) => handleChange(e, index)}
-              required
-            />
-            <input
-              name="horaFin"
-              type="time"
-              value={dia.horaFin}
-              onChange={(e) => handleChange(e, index)}
-              required
-            />
-            <button type="button" onClick={() => handleRemoveDia(index)}>
-              Eliminar Día
+            <input type="date" name="dia" value={dia.dia} onChange={(e) => handleChange(e, index)} required/>
+            <input name="horaInicio" type="time" value={dia.horaInicio} onChange={(e) => handleChange(e, index)} required/>
+            <input name="horaFin" type="time" value={dia.horaFin} onChange={(e) => handleChange(e, index)} required/>
+
+            <button type="button" onClick={() => handleRemoveDia(index)}> Eliminar Día
             </button>
           </div>
         ))}
-        <button type="button" onClick={handleAddDia}>
-          Agregar Día
+        <button type="button" onClick={handleAddDia}> Agregar Día
         </button>
         <button type="submit">Crear Agenda</button>
       </form>
