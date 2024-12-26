@@ -311,5 +311,48 @@ export const sections = [
             ]
         }
     ]
+    },
+    {
+        name:'Turnos',
+        route:'/turnos',
+        options:[
+        {
+            nombre:'Turno por id',
+            subroute:'/buscarTurnosId',
+            items:null
+        },
+        {
+            nombre:'Crear Turno',
+            subroute:'/crearTurno',
+            items:[
+                {
+                    name:'dni',
+                    type:'number'
+                },
+                {
+                    name:'matricula',
+                    type:'number'
+                },
+                {
+                    name:'fecha',
+                    type:'date'
+                },
+                {
+                    name:'hora',
+                    type:'time'
+                }
+            ]
+        },
+        {
+            nombre:'Borrar turno',
+            subroute:'/borrarTurno',
+            items:null
+        },
+        {
+            nombre:'Modificar turno',
+            subroute:'/modificarTurno',
+            items:null
+        }
+    ]
     }
 ]

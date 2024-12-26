@@ -22,6 +22,8 @@ import { UpdateMedicoPage } from "./medicoPage/UpdateMedicoPage"
 import { CreateSalaPage } from "./salaPage/CreateSalaPage"
 import { UpdateSalaPage } from "./salaPage/UpdateSalaPage"
 import { CreateAgendaPage } from "./agendaPage/CreateAgendaPage"
+import { CreateTurnoPage } from "./turnoPage/CreateTurnoPage.jsx"
+import { UpdateTurnoPage } from "./turnoPage/UpdateTurnoPage.jsx"
 
 export const App = () => {
     return (
@@ -86,7 +88,14 @@ export const App = () => {
                                     <Route path="buscarAgendaDiaId" element={<GetByIdComponent endpoint={'/agendaDia/'}/>}></Route>
                                     <Route path="crearAgendaDia" element={<CreateAgendaPage endpoint={'/agendaDia/'}/>}></Route>
                                     <Route path="borrarAgendaDia" element={<DeleteComponent endpoint={'/agendaDia/'}/>}></Route>
-            
+                                </Route>
+                                <Route path="/Turnos" element={<GlobalComponent datos={sections[7]}/>}>
+                                    <Route index element={<Navigate to="buscarTurnos" replace />} />
+                                    <Route path="buscarTurnos" element={<GetAllComponent endpoint={'/turno'}/>}></Route>
+                                    <Route path="buscarTurnoId" element={<GetByIdComponent endpoint={'/turno/'}/>}></Route>
+                                    <Route path="crearTurno" element={<CreateTurnoPage endpoint={'/turno/'}/>}></Route>
+                                    <Route path="borrarTurno" element={<DeleteComponent endpoint={'/turno/'}/>}></Route>
+                                    <Route path="modificarTurno" element={<UpdateTurnoPage endpoint={'/turno/'}/>}></Route>
                                 </Route>
                         </Route>
                     </Route>

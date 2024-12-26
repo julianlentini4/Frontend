@@ -78,9 +78,8 @@ export const CreateAgendaPage = ({ endpoint }) => {
     <div>
       <h3>Crear Agenda</h3>
       <form onSubmit={handleSubmit}>
-          <label>Matrícula</label>
-          <input type="number" name="matricula" value={parseInt(matricula)} onChange={handleChange} required />
-        <h4>Fecha</h4>
+          <input type="number" name="matricula" placeholder = "Matricula" value={parseInt(matricula)} onChange={handleChange} required />
+        <h4>Dias de la agenda</h4>
         {dias.map((dia, index) => (
           <div key={index} className="dia-item">
             <input type="date" name="dia" value={dia.dia} onChange={(e) => handleChange(e, index)} required/>

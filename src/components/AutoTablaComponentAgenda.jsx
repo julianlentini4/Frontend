@@ -1,7 +1,7 @@
 import React from "react";
 import { GetAllComponentAgenda } from "./GetAllComponentAgenda";
 
-export const AutoTablaComponentAgenda = ({ data, onDelete}) => {
+export const AutoTablaComponentAgenda = ({ data}) => {
 
   const handleDelete = async (idAgendaDia) => {
     try {
@@ -11,7 +11,7 @@ export const AutoTablaComponentAgenda = ({ data, onDelete}) => {
       if (response.ok) {
         alert("Agenda eliminada exitosamente.");
         window.location.reload()
-        fetchData();
+        // fetchData();
       } else {
         console.log("Error al eliminar la agenda.");
       }
