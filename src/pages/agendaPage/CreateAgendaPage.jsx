@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
 import { RouterContext } from "../../context/UseContext";
 import { useFetch } from "../../hooks/useFetch";
+import { format, addMinutes, parseISO, subHours } from "date-fns";
+
 
 export const CreateAgendaPage = ({ endpoint }) => {
   const { routerData } = useContext(RouterContext);
   const { data, fetchData, isLoading, error } = useFetch();
-
   const [matricula, setMatricula] = useState("");
   const [dias, setDias] = useState([{ dia: "", horaInicio: "", horaFin: "" }]);
   const [validate, setValidate] = useState(true);
@@ -21,9 +22,11 @@ export const CreateAgendaPage = ({ endpoint }) => {
       const newDias = [...dias];
       newDias[index][name] = value;
       setDias(newDias);
-    } else {
-      if (name === "matricula") setMatricula(parseInt(value));
-    }
+    } 
+    // else {
+    //   if (name === "matricula") setMatricula(parseInt(value));
+    // }
+    if(name === 'matricula') setMatricula(parseInt(value))
   };
 
   const handleAddDia = () => {
@@ -35,33 +38,132 @@ export const CreateAgendaPage = ({ endpoint }) => {
     setDias(newDias);
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  
+  //   try {
+  //     const mat = parseInt(matricula, 10);
+  //     const agendaResponse = await fetch("http://localhost:3000/agenda", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ matricula:mat }),
+  //     });
+  
+  //     const agendaData = await agendaResponse.json();
+  
+  //     if (agendaResponse.ok) {
+
+  //       for (const dia of dias) {
+  //         const diaResponse = await fetch("http://localhost:3000/agendaDia", {
+  //           method: "POST",
+  //           headers: { "Content-Type": "application/json" },
+  //           body: JSON.stringify({
+  //             dia: dia.dia,
+  //             horaInicio: dia.horaInicio,
+  //             horaFin: dia.horaFin,
+  //           }),
+  //         });
+  //         if (!diaResponse.ok) {
+  //           console.error("Error al crear el día:", await diaResponse.text());
+  //         }
+  //       }
+  //       alert("Agenda creada con éxito!");
+  //     } else {
+  //       console.error("Error al crear la Agenda:", agendaData.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error general:", error);
+  //   }
+  // };
+  
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  
+  //   try {
+  //     const mat = parseInt(matricula, 10);
+  //     const agendaResponse = await fetch("http://localhost:3000/agenda", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ matricula: mat }),
+  //     });
+  
+  //     const agendaData = await agendaResponse.json();
+  
+  //     if (agendaResponse.ok) {
+  //       for (const dia of dias) {
+  //         const turnos = [];
+  //         let currentTime = new Date(`${dia.dia}T${dia.horaInicio}`);
+  //         const endTime = new Date(`${dia.dia}T${dia.horaFin}`);
+  
+  //         while (currentTime < endTime) {
+  //           const nextTime = new Date(currentTime.getTime() + 15 * 60000);
+  //           if (nextTime <= endTime) {
+  //             turnos.push({
+  //               dia: dia.dia,
+  //               horaInicio: currentTime.toISOString().substring(11, 16),
+  //               horaFin: nextTime.toISOString().substring(11, 16),
+  //             });
+  //           }
+  //           currentTime = nextTime;
+  //         }
+  
+  //         for (const turno of turnos) {
+  //           const diaResponse = await fetch("http://localhost:3000/agendaDia", {
+  //             method: "POST",
+  //             headers: { "Content-Type": "application/json" },
+  //             body: JSON.stringify(turno),
+  //           });
+  //           if (!diaResponse.ok) {
+  //             console.error("Error al crear el turno:", await diaResponse.text());
+  //           }
+  //         }
+  //       }
+  //       alert("Agenda creada con éxito!");
+  //     } else {
+  //       console.error("Error al crear la Agenda:", agendaData.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error general:", error);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     try {
-      const mat = parseInt(matricula, 10);
-      const agendaResponse = await fetch("http://localhost:3000/agenda", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ matricula:mat }),
-      });
+      // const mat = parseInt(matricula, 10);
+      const agendaResponse = await fetch(`http://localhost:3000/agenda`,'POST',{matricula})
+      // await fetch("http://localhost:3000/agenda", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ matricula: mat }),
+      // });
   
       const agendaData = await agendaResponse.json();
   
       if (agendaResponse.ok) {
-
         for (const dia of dias) {
-          const diaResponse = await fetch("http://localhost:3000/agendaDia", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              dia: dia.dia,
-              horaInicio: dia.horaInicio,
-              horaFin: dia.horaFin,
-            }),
-          });
-          if (!diaResponse.ok) {
-            console.error("Error al crear el día:", await diaResponse.text());
+          const turnos = [];
+          let currentTime = subHours(parseISO(`${dia.dia}T${dia.horaInicio}`),0);
+          const endTime = subHours(parseISO(`${dia.dia}T${dia.horaFin}`),0);
+  
+          while (currentTime < endTime) {
+            const nextTime = addMinutes(currentTime, 15);
+            if (nextTime <= endTime) {
+              turnos.push({
+                dia: dia.dia,
+                horaInicio: format(currentTime, "HH:mm"),
+                horaFin: format(nextTime, "HH:mm"),
+              });
+            }
+            currentTime = nextTime;
+          }
+  
+          for (const turno of turnos) {
+            const diaResponse = await fetch("http://localhost:3000/agendaDia", "POST", { "Content-Type": "application/json" }, JSON.stringify(turno));
+            if (!diaResponse.ok) {
+              console.error("Error al crear el turno:", await diaResponse.text());
+            }
           }
         }
         alert("Agenda creada con éxito!");

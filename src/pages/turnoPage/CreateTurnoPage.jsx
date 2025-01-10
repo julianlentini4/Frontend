@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { RouterContext } from "../../context/UseContext"
 import { useFetch } from "../../hooks/useFetch"
+import { use } from "react"
 
 export const CreateTurnoPage = ({endpoint}) => {
     const {routerData} = useContext(RouterContext)
@@ -8,6 +9,7 @@ export const CreateTurnoPage = ({endpoint}) => {
     const [dni, setDni] = useState()
     const [especialidad, setEspecialidad] = useState([])
     const [idEspecialidad, setIdEspecialidad] = useState("")
+    const [agenda, setAgenda] = useState([])
     const [validate, setValidate] = useState(true)
 
     const handleChangeEspecialidad = (e) => {
@@ -35,7 +37,33 @@ export const CreateTurnoPage = ({endpoint}) => {
         loadEspecialidades()
       }, []);
       
+    useEffect(() => {
+        const loadAgendas = async () => {
+          try {
+            const response = await fetch(`http://localhost:3000/agenda`)
+            const result = await response.json();
+            const agendasArray = Object.values(result)
+            setAgenda(agendasArray);
+          } catch (err) {
+            console.error("Error al cargar agendas:", err)
+          }
+        }
+        loadAgendas()
+      }, []);
 
+    useEffect(() => {
+      const loadEspecialidades = async () => {
+        try {
+          const response = await fetch(`http://localhost:3000/especialidad`)
+          const result = await response.json();
+          const especialidadesArray = Object.values(result)
+          setEspecialidad(especialidadesArray);
+        } catch (err) {
+          console.error("Error al cargar especialidades:", err)
+        }
+      }
+      loadEspecialidades()
+    }, []);
 
     const handleSubmit = (e)=>{
         e.preventDefault()
